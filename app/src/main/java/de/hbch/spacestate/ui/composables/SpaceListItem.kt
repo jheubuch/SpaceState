@@ -1,5 +1,6 @@
 package de.hbch.spacestate.ui.composables
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,12 +26,9 @@ import de.hbch.spacestate.R
 import de.hbch.spacestate.ui.theme.Typography
 import io.spaceapi.parseString
 import io.spaceapi.types.Status
-import okhttp3.Call
-import okhttp3.Callback
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
-import java.io.IOException
+import ru.gildor.coroutines.okhttp.await
 
 @Composable
 fun SpaceListItem(
@@ -58,27 +56,18 @@ fun SpaceListItem(
                 val client = OkHttpClient.Builder()
                     .build()
 
-                client.newCall(request).enqueue(
-                    object: Callback {
-                        override fun onFailure(call: Call, e: IOException) {
-                            isLoading = false
-                            isError = true
-                        }
-
-                        override fun onResponse(call: Call, response: Response) {
-                            if (response.isSuccessful) {
-                                val statusJson = response.body?.string() ?: ""
-                                spaceState = parseString(statusJson)
-                            } else {
-                                isError = true
-                            }
-                            isLoading = false
-                        }
-
+                try {
+                    val response = client.newCall(request).await()
+                    if (response.isSuccessful) {
+                        val statusJson = response.body?.string() ?: ""
+                        spaceState = parseString(statusJson)
+                    } else {
+                        isError = true
                     }
-                )
+                } catch (_: Exception) {
+                    isError = true
+                }
                 isLoading = false
-                isError = true
             }
         }
 
@@ -109,9 +98,9 @@ fun SpaceListItem(
                         contentDescription = null
                     )
                     val message = spaceState?.state?.message
-                    if (message != null) {
+                    AnimatedVisibility(message != null) {
                         Text(
-                            text = message,
+                            text = message!!,
                             style = Typography.labelSmall
                         )
                     }

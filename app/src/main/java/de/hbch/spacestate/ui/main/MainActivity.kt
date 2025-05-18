@@ -5,12 +5,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -18,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import de.hbch.spacestate.R
@@ -41,6 +46,16 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         )
+                    },
+                    floatingActionButton = {
+                        FloatingActionButton(
+                            onClick = { }
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_add),
+                                contentDescription = null
+                            )
+                        }
                     }
                 ) { innerPadding ->
                     val spaces = remember { mutableStateListOf<Pair<String, String>>() }
@@ -66,6 +81,11 @@ class MainActivity : ComponentActivity() {
                                 space.first,
                                 space.second,
                                 modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                        item {
+                            Box(
+                                modifier = Modifier.height(64.dp)
                             )
                         }
                     }

@@ -10,6 +10,7 @@ activityCompose = "1.10.1"
 composeBom = "2025.05.00"
 spaceapi = "0.7.0"
 okHttpBom = "4.12.0"
+okHttpAsync = "1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -29,6 +30,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 spaceapi = { group = "io.github.spaceapi-community", name = "spaceapi-kt", version.ref = "spaceapi" }
 okHttpBom = { group =  "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okHttpBom" }
 okHttp = { group = "com.squareup.okhttp3", name = "okhttp" }
+okHttpAsync = { group = "ru.gildor.coroutines", name="kotlin-coroutines-okhttp", version.ref = "okHttpAsync" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
