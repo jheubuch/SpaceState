@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,6 +25,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import de.hbch.spacestate.R
+import de.hbch.spacestate.shared.prepareRequest
 import de.hbch.spacestate.ui.theme.Typography
 import io.spaceapi.parseString
 import io.spaceapi.types.Status
@@ -30,6 +33,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import ru.gildor.coroutines.okhttp.await
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SpaceListItem(
     spaceName: String,
@@ -48,10 +52,7 @@ fun SpaceListItem(
                 isLoading = true
                 isError = false
                 val request = Request.Builder()
-                    .get()
-                    .addHeader("Accept", "application/json")
-                    .addHeader("User-Agent", "SpaceState/1.0.0")
-                    .url(spaceApiEndpoint)
+                    .prepareRequest(spaceApiEndpoint)
                     .build()
                 val client = OkHttpClient.Builder()
                     .build()
@@ -81,10 +82,8 @@ fun SpaceListItem(
                 style = Typography.bodyLarge
             )
             if (isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
-                    strokeCap = StrokeCap.Round,
-                    strokeWidth = 4.dp
+                LoadingIndicator(
+                    modifier = Modifier.size(24.dp)
                 )
             } else {
                 Column(
