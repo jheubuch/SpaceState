@@ -1,6 +1,7 @@
 package de.hbch.spacestate.shared
 
 import de.hbch.spacestate.BuildConfig
+import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
@@ -11,4 +12,4 @@ fun Request.Builder.prepareRequest(url: String): Request.Builder {
         .url(url)
 }
 
-fun getClient(): OkHttpClient = OkHttpClient.Builder().build()
+val NetworkClient: OkHttpClient = OkHttpClient.Builder().dispatcher(Dispatcher().also { it.maxRequests = 5 }).build()
